@@ -1,20 +1,24 @@
 // This is the top-level scss file. Import all other files in here.
 @import 'home';
 
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
+$header-text: 'Permanent Marker', cursive;
+$body-text: 'Press Start 2P', cursive;
+$primary-color: red;
+$secondary-color: yellow;
 
 body {
   background: white;
   color: black;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $body-text;
   font-size: 14px;
   margin: 70px 0;
 }
 
 .chatbar {
-  background: tomato;
+  background: $primary-color;
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -66,10 +70,11 @@ body {
 .message-username {
   flex: 2;
   font-weight: 700;
+  background-color: $secondary-color;
 }
 
 .navbar {
-  background: tomato;
+  background: $primary-color;
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;
@@ -80,11 +85,11 @@ body {
 }
 
 .navbar-brand {
-  color: yellow;
+  color: $secondary-color;
   display: block;
   float: left;
-  font-family: 'Permanent Marker', cursive;
-  font-size: 28px;
+  font-family: $header-text;
+  font-size: 2.5rem;
   height: 60px;
   line-height: 60px;
   padding: 0 10px;

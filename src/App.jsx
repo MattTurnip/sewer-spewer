@@ -22,6 +22,7 @@ class App extends Component {
         }
       ]
     }
+
   }
 
   componentDidMount() {
@@ -37,8 +38,16 @@ class App extends Component {
     }, 3000);
   }
 
-  addMessage() {
-    alert("hello");
+
+  addMessage = (username, content) => {
+    const oldMessages = this.state.messages;
+    const newMessage = {
+      id: Math.random(),
+      username: username,
+      content: content
+    };
+    const newMessages = [...oldMessages, newMessage]
+    this.setState({ messages: newMessages })
   }
 
   render() {
@@ -46,7 +55,7 @@ class App extends Component {
       <div>
         <Nav />
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser} />
+        <ChatBar currentUser={this.state.currentUser} addMessage={this.addMessage} />
       </div>
     );
   }
