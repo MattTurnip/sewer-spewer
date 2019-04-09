@@ -7,7 +7,7 @@ class Nav extends Component {
                 <a href="/" className="navbar-brand">
                     Sewer Spewer
                 </a>
-                <img src='../build/pizzaforest.png' className='logo' />
+                <img src='../build/rat.png' className='logo' />
             </nav>
         );
     }

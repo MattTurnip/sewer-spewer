@@ -7,6 +7,7 @@ import MessageList from './MessageList.jsx'
 class App extends Component {
   constructor(props) {
     super(props);
+    this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
       currentUser: { name: "Matt" },
       messages: [
@@ -25,30 +26,44 @@ class App extends Component {
 
   }
 
-  componentDidMount() {
-    console.log("componentDidMount <App />");
-    setTimeout(() => {
-      console.log("Simulating incoming message");
-      // Add a new message to the list of messages in the data store
-      const newMessage = { id: 3, username: "Michelle", content: "Hello there!" };
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({ messages: messages })
-    }, 3000);
-  }
-
-
   addMessage = (username, content) => {
-    const oldMessages = this.state.messages;
     const newMessage = {
       id: Math.random(),
       username: username,
       content: content
     };
-    const newMessages = [...oldMessages, newMessage]
-    this.setState({ messages: newMessages })
+    return this.socket.send(JSON.stringify(newMessage));
   }
+
+
+
+
+  componentDidMount() {
+    console.log("componentDidMount <App />");
+    this.socket.onopen = (event) => {
+      console.log("Connected to websocket server!")
+      // this.socket.send(this.addMessage)
+
+    }
+    this.socket.onclose = (event) => {
+      console.log("where websocket go?!1")
+
+    }
+
+
+  }
+
+
+  // addMessage = (username, content) => {
+  //   const oldMessages = this.state.messages;
+  //   const newMessage = {
+  //     id: Math.random(),
+  //     username: username,
+  //     content: content
+  //   };
+  //   const newMessages = [...oldMessages, newMessage]
+  //   this.setState({ messages: newMessages })
+  // }
 
   render() {
     return (
