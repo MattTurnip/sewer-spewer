@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ChatBar from './ChatBar.jsx';
 import Nav from './Nav.jsx';
 import MessageList from './MessageList.jsx'
+import Notification from './Notification.jsx'
 
 
 class App extends Component {
@@ -9,68 +10,75 @@ class App extends Component {
     super(props);
     this.socket = new WebSocket('ws://localhost:3001');
     this.state = {
-      currentUser: { name: "Matt" },
-      messages: [
-        {
-          id: "1",
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id: "2",
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
+      peopleOnline: 0,
+      currentUser: { name: "Anonymous" },
+      messages: []
     }
 
   }
 
   addMessage = (username, content) => {
     const newMessage = {
-      id: Math.random(),
+      type: "postMessage",
       username: username,
       content: content
     };
     return this.socket.send(JSON.stringify(newMessage));
   }
 
-
-
+  changeUsername = (username) => {
+    const newUsername = {
+      username: username,
+      content: `${this.state.currentUser.name} changed their name to ${username}`,
+      type: "postNotification"
+    }
+    this.setState({ currentUser: { name: username } })
+    return this.socket.send(JSON.stringify(newUsername));
+  }
 
   componentDidMount() {
     console.log("componentDidMount <App />");
     this.socket.onopen = (event) => {
       console.log("Connected to websocket server!")
-      // this.socket.send(this.addMessage)
-
     }
+
+    this.socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "incomingMessage") {
+        const oldMessages = this.state.messages;
+        const newMessage = data
+        const newMessages = [...oldMessages, newMessage]
+        this.setState({ messages: newMessages });
+      }
+      if (data.type === "incomingNotification") {
+        const oldMessages = this.state.messages;
+        const newMessage = data
+        const newMessages = [...oldMessages, newMessage]
+        this.setState({ messages: newMessages });
+      }
+      if (data.type === "onlineOffline") {
+        const data = JSON.parse(event.data);
+        console.log(data.peopleOnline);
+        this.setState({ peopleOnline: data.peopleOnline })
+        console.log(this.state);
+      }
+    }
+
+
     this.socket.onclose = (event) => {
-      console.log("where websocket go?!1")
+      console.log("Websockets not connected")
 
     }
 
 
   }
 
-
-  // addMessage = (username, content) => {
-  //   const oldMessages = this.state.messages;
-  //   const newMessage = {
-  //     id: Math.random(),
-  //     username: username,
-  //     content: content
-  //   };
-  //   const newMessages = [...oldMessages, newMessage]
-  //   this.setState({ messages: newMessages })
-  // }
-
   render() {
     return (
       <div>
-        <Nav />
+        <Nav peopleOnline={this.state.peopleOnline} />
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser} addMessage={this.addMessage} />
+        <ChatBar currentUser={this.state.currentUser} addMessage={this.addMessage} changeUsername={this.changeUsername} />
       </div>
     );
   }

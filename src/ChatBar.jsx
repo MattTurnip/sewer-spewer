@@ -12,12 +12,19 @@ class ChatBar extends Component {
                 event.target.value = '';
             }
         }
+        const handleUserEnter = event => {
+            const newUsername = event.target.value;
+            if (event.keyCode === 13 && event.shiftKey === false && newUsername.length > 0) {
+                this.props.changeUsername(newUsername);
+            }
+        }
         return (
             <footer className="chatbar">
 
                 <input
                     className="chatbar-username"
                     defaultValue={this.props.currentUser.name}
+                    onKeyDown={handleUserEnter}
                 />
                 <input
                     className="chatbar-message"
