@@ -17,8 +17,12 @@ Sewer Spewer is primarily a client-side single page app that bills itself as the
 Snaps from the Sewer:
 
 !["Chat with many friends!"](./build/chatting.png)
+
 instense chatting action
+
+
 !["Support for images!"](./build/gifSupport.gif)
+
 gifs! everybody love 'em
 
 ---
