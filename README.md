@@ -12,6 +12,13 @@ Sewer Spewer is primarily a client-side single page app that bills itself as the
 * WebSockets
 * Node.js
 
+### Instructions:
+ 1. Fork this repo and clone it to your local machine
+ 2. Install dependencies with `npm install`
+ 3. Next, let's get our WebPack server running by entering `npm start` in the command line.
+ 4. In a separate terminal window, navigate to `/chatty_server` and enter `npm start` to run the WebSockets server 
+ 5. Visit http://localhost:3000 in your browser and start a conversation with ... yourself?
+
 
 ---
 Snaps from the Sewer:
