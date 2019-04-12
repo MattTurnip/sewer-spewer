@@ -1,24 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Message from './Message.jsx'
 import Notification from './Notification.jsx'
 
-class MessageList extends Component {
-    render() {
-        const message = this.props.messages.map((message) => {
-            if (message.type === 'incomingMessage') {
-                return <Message message={message} key={message.id} />
-            } else {
-                return <Notification message={message} key={message.id} />
-            }
-        })
-
-        return (
-            <main className="messages">
-                {message}
-
-            </main>
-        );
-    }
+function MessageList({ messages }) {
+    const message = messages.map((message) => {
+        if (message.type === 'incomingMessage') {
+            return <Message message={message} key={message.id} />
+        } else {
+            return <Notification message={message} key={message.id} />
+        }
+    })
+    return (
+        <main className="messages">
+            {message}
+            <div ref={(el) => el && el.scrollIntoView({ behavior: "smooth" })}>
+            </div>
+        </main >
+    );
 }
 
 export default MessageList;
