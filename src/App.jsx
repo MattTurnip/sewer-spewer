@@ -14,63 +14,83 @@ class App extends Component {
       currentUser: { name: "Anonymous" },
       messages: []
     }
+  }
 
+
+  imgs = data => {
+    const imgRegex = /(http(s?):)([\/|.|\w|\s|-])*\.(?:jpg|gif|png)/;
+    const imgMatches = data.match(imgRegex);
+    if (imgMatches) {
+      return imgMatches[0];
+    } else {
+      return undefined;
+    }
   }
 
   addMessage = (username, content) => {
+    const imgRegex = /(http(s?):)([\/|.|\w|\s|-])*\.(?:jpg|gif|png)/;
+    const contentReplace = content.replace(imgRegex, '');
+    const img = this.imgs(content);
     const newMessage = {
       type: "postMessage",
       username: username,
-      content: content
+      content: contentReplace,
+      img: img
     };
     return this.socket.send(JSON.stringify(newMessage));
   }
+
 
   changeUsername = (username) => {
     const newUsername = {
       username: username,
       content: `${this.state.currentUser.name} changed their name to ${username}`,
-      type: "postNotification"
+      type: "postNotification",
     }
-    this.setState({ currentUser: { name: username } })
+    this.setState({
+      currentUser: {
+        name: username,
+      }
+    })
     return this.socket.send(JSON.stringify(newUsername));
+  }
+
+
+  messageHandler = (data) => {
+
+    const oldMessages = this.state.messages;
+    const newMessage = data
+    const newMessages = [...oldMessages, newMessage]
+    this.setState({ messages: newMessages });
   }
 
   componentDidMount() {
     console.log("componentDidMount <App />");
+
     this.socket.onopen = (event) => {
       console.log("Connected to websocket server!")
     }
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+
       if (data.type === "incomingMessage") {
-        const oldMessages = this.state.messages;
-        const newMessage = data
-        const newMessages = [...oldMessages, newMessage]
-        this.setState({ messages: newMessages });
+        this.messageHandler(data);
       }
+
       if (data.type === "incomingNotification") {
-        const oldMessages = this.state.messages;
-        const newMessage = data
-        const newMessages = [...oldMessages, newMessage]
-        this.setState({ messages: newMessages });
+        this.messageHandler(data);
       }
+
       if (data.type === "onlineOffline") {
-        const data = JSON.parse(event.data);
-        console.log(data.peopleOnline);
         this.setState({ peopleOnline: data.peopleOnline })
-        console.log(this.state);
       }
     }
-
 
     this.socket.onclose = (event) => {
       console.log("Websockets not connected")
 
     }
-
-
   }
 
   render() {

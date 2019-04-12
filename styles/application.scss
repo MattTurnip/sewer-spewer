@@ -16,8 +16,6 @@ body {
   font-family: $body-text;
   font-size: 14px;
   margin: 70px 0;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-
 }
 
 .chatbar {
@@ -70,10 +68,15 @@ body {
   flex: 8;
 }
 
+.message img {
+  display: block;
+  height: 15rem;
+}
+
 .message-username {
   flex: 2;
   font-weight: 700;
-  background-color: $secondary-color;
+  text-shadow: 1px 1px black;
 }
 
 .navbar {
