@@ -24,7 +24,7 @@ body {
   bottom: 0;
   display: flex;
   left: 0;
-  padding: 5px;
+  padding: 10px 5px;
   position: fixed;
   right: 0;
 }
@@ -41,10 +41,24 @@ body {
 
 .chatbar-message {
   flex: 8;
+  background: $secondary-color;
+  box-shadow: 3px 3px black;
+  border: none;
+}
+
+.chatbar-message:focus {
+  outline: 1px solid black;
 }
 
 .chatbar-username {
   flex: 2;
+  background: $secondary-color;
+  box-shadow: 3px 3px black;
+  border: none;
+}
+
+.chatbar-username:focus {
+  outline: 1px solid black;
 }
 
 .message {
@@ -66,6 +80,7 @@ body {
 
 .message-content {
   flex: 8;
+  word-break: break-all;
 }
 
 .message img {

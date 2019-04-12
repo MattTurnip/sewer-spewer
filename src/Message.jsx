@@ -1,24 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Message extends Component {
-    render() {
-        const userColor = this.props.message.color;
-        let img;
-        if (this.props.message.img) {
-            img = <img src={this.props.message.img} />
-        }
-        return (
-            <div className="message">
-                <span className="message-username" style={{ color: userColor }}>
-                    {this.props.message.username}
-                </span>
-                <span className="message-content">
-                    {this.props.message.content}
-                    {img}
-                </span>
-            </div>
-        );
+function Message({ message }) {
+    const userColor = message.color;
+    let img;
+    if (message.img) {
+        img = <img src={message.img} />
     }
+    return (
+        <div className="message">
+            <span className="message-username" style={{ color: userColor }}>
+                {message.username}
+            </span>
+            <span className="message-content">
+                {message.content}
+                {img}
+            </span>
+        </div>
+    );
 }
 
 export default Message;
